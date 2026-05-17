@@ -100,8 +100,10 @@ To survive process death and enable session resumption, the exact state is flush
 ### 5.2 Mala Virtualized Rendering & Guru Bead Strategy
 - **Independence**: Logical target count is independent of the physical 108+1 bead mala.
 - **Rendering Mechanism**:
-  - Implement a specialized Compose pointer input modifier (`detectVerticalDragGestures`) tied to an `Animatable`.
-  - Render ~5-7 beads using mathematical offsets wrapping logically within the 108 physical bead constraints.
+  - Implement discrete vertical swipe gestures (similar to reels) using a custom pointer input gesture tracker.
+  - Swipe up moves the mala one bead forward; swipe down moves it one bead backward.
+  - Snap animations explicitly lock out further gesture input until completed.
+  - Strict mapping: 1 discrete swipe gesture = exactly 1 bead snapped = exactly 1 increment intent. Fling and long drags are completely ignored.
 - **Guru Bead Automatic Reversal Strategy**:
   1. **No increment**: Reaching the Guru bead does not increase the Jap count.
   2. **Block progression**: It acts as a hard physical barrier.

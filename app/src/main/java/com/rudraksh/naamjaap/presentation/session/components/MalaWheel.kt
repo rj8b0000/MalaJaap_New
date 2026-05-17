@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -30,14 +31,17 @@ fun MalaWheel(
     activeBeadIndex: Int,
     direction: Int,
     isPaused: Boolean,
-    onSwipeBead: () -> Unit,
+    onSwipeForward: () -> Unit,
+    onSwipeBackward: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
     
     // Drag accumulation in pixels
     val dragOffset = remember { Animatable(0f) }
-    val dragThreshold = 250f // pixels required to trigger one increment
+    val isAnimating = remember { mutableStateOf(false) }
+    
+    val dragThreshold = 100f // Explicit swipe threshold (ignores micro-touches/taps)
     val beadSpacingPx = 250f
 
     Box(
@@ -47,8 +51,10 @@ fun MalaWheel(
                 if (isPaused) return@pointerInput
                 
                 detectVerticalDragGestures(
+                    onDragStart = { },
                     onDragEnd = {
-                        // Snap back if threshold not met
+                        // Snap back to 0 if the swipe was too short (didn't cross threshold)
+                        if (isAnimating.value) return@detectVerticalDragGestures
                         coroutineScope.launch {
                             dragOffset.animateTo(
                                 targetValue = 0f,
@@ -57,28 +63,46 @@ fun MalaWheel(
                         }
                     }
                 ) { change, dragAmount ->
+                    if (isAnimating.value) {
+                        // Input Locked: ignore all gestures while snap animation is running
+                        change.consume()
+                        return@detectVerticalDragGestures
+                    }
+                    
                     change.consume()
                     coroutineScope.launch {
                         val newOffset = dragOffset.value + dragAmount
-                        // Only allow dragging downwards (pulling beads towards user)
-                        if (newOffset >= dragThreshold) {
-                            onSwipeBead()
-                            // Instantly wrap the offset back to maintain continuous scroll illusion
-                            dragOffset.snapTo(newOffset - dragThreshold)
-                        } else if (newOffset < 0f) {
-                            // High resistance for dragging upwards
-                            dragOffset.snapTo(newOffset * 0.2f)
-                        } else {
-                            dragOffset.snapTo(newOffset)
+                        dragOffset.snapTo(newOffset)
+                        
+                        if (newOffset <= -dragThreshold) { 
+                            // Swipe Up -> Forward
+                            isAnimating.value = true
+                            // Complete the physical animation to exactly one bead distance
+                            dragOffset.animateTo(-beadSpacingPx, spring(stiffness = 400f))
+                            // Fire exact 1 increment
+                            onSwipeForward()
+                            // Instantly reset visual offset as the logical index shifts
+                            dragOffset.snapTo(0f)
+                            isAnimating.value = false
+                            
+                        } else if (newOffset >= dragThreshold) { 
+                            // Swipe Down -> Backward
+                            isAnimating.value = true
+                            dragOffset.animateTo(beadSpacingPx, spring(stiffness = 400f))
+                            onSwipeBackward()
+                            dragOffset.snapTo(0f)
+                            isAnimating.value = false
                         }
                     }
                 }
             },
         contentAlignment = Alignment.Center
     ) {
-        // Render visible beads
+        // Render visible beads (virtualized range)
         for (i in -3..3) {
-            val logicalIndex = activeBeadIndex + (direction * -i)
+            // Swipe Up brings beads up. Bottom beads come to center.
+            // i=1 (bottom) is the NEXT bead forward.
+            val logicalIndex = activeBeadIndex + (direction * i)
             
             // 0 and 109 represent the Guru bead bounds
             val isGuruBead = logicalIndex == 109 || logicalIndex == 0
@@ -94,10 +118,10 @@ fun MalaWheel(
             val scale = (1f - (normalizedDistance * 0.15f)).coerceIn(0.5f, 1f)
             val alpha = (1f - (normalizedDistance * 0.25f)).coerceIn(0f, 1f)
             
+            val isCenter = normalizedDistance < 0.5f
             val beadColor = when {
                 isGuruBead -> MaterialTheme.colorScheme.error // Guru bead
-                i == 0 && dragOffset.value < (dragThreshold/2) -> MaterialTheme.colorScheme.primary // Active bead
-                i == -1 && dragOffset.value >= (dragThreshold/2) -> MaterialTheme.colorScheme.primary // Next bead becoming active
+                isCenter -> MaterialTheme.colorScheme.primary // Active highlighted bead
                 else -> MaterialTheme.colorScheme.surfaceVariant // Standard bead
             }
             
@@ -112,9 +136,7 @@ fun MalaWheel(
                     .clip(CircleShape)
                     .background(beadColor),
                 contentAlignment = Alignment.Center
-            ) {
-                // Detail could be added here
-            }
+            ) {}
         }
     }
 }

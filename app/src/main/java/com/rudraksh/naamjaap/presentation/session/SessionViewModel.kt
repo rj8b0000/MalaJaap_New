@@ -52,7 +52,8 @@ class SessionViewModel @Inject constructor(
     fun processIntent(intent: SessionIntent) {
         when (intent) {
             is SessionIntent.LoadSessionData -> loadSessionData()
-            is SessionIntent.SwipeBead -> handleSwipeBead()
+            is SessionIntent.SwipeBeadForward -> handleSwipeForward()
+            is SessionIntent.SwipeBeadBackward -> handleSwipeBackward()
             is SessionIntent.TogglePauseResume -> togglePauseResume()
             is SessionIntent.EndSession -> endSession()
             is SessionIntent.AppBackgrounded -> handleAppBackgrounded()
@@ -84,7 +85,7 @@ class SessionViewModel @Inject constructor(
         }
     }
 
-    private fun handleSwipeBead() {
+    private fun handleSwipeForward() {
         val session = currentActiveSession ?: return
         if (session.isPaused || _state.value.isCompleted) return
 
@@ -114,6 +115,46 @@ class SessionViewModel @Inject constructor(
                     emitEffect(SessionEffect.NavigateToCompletionSummary)
                 }
             }
+        }
+    }
+
+    private fun handleSwipeBackward() {
+        val session = currentActiveSession ?: return
+        if (session.isPaused || _state.value.isCompleted || session.currentCount <= 0) return
+
+        var nextCount = session.currentCount
+        var nextBeadIndex = session.activeBeadIndex
+        var nextDirection = session.direction
+        var hitGuruBead = false
+
+        val attemptedPrevBead = nextBeadIndex - nextDirection
+
+        if (attemptedPrevBead > 108 || attemptedPrevBead < 1) {
+            nextDirection *= -1
+            hitGuruBead = true
+        } else {
+            nextCount--
+            nextBeadIndex = attemptedPrevBead
+            hitGuruBead = false
+        }
+
+        val newSession = session.copy(
+            currentCount = nextCount,
+            activeBeadIndex = nextBeadIndex,
+            direction = nextDirection,
+            guruBlockingState = hitGuruBead
+        )
+
+        currentActiveSession = newSession
+        updateState(SessionResult.SessionUpdated(newSession))
+        persistSession(newSession)
+
+        if (hitGuruBead) {
+            emitEffect(SessionEffect.PlayGuruBeadEffect)
+            emitEffect(SessionEffect.ShowGuruBeadExplanation)
+        } else {
+            if (_state.value.hapticEnabled) emitEffect(SessionEffect.PlayHapticTick)
+            if (_state.value.soundEnabled) emitEffect(SessionEffect.PlaySoundTick)
         }
     }
 

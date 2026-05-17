@@ -44,11 +44,18 @@ Build a premium, immersive spiritual meditation and mantra counting Android app.
   5. **Settings**: Simple, accessible preference toggles.
 
 ## 4. Gesture Interaction Rules
-- **Interaction Axis**: Strictly vertical scrolling/swiping for the mala.
-- **Single Intent Rule**: One distinct bead movement per intentional gesture. Continuous fast swiping should not uncontrollably spin the mala.
-- **Increment Trigger**: One successful bead snap/movement equals exactly one Jap increment.
-- **Tactility**: Snapping behavior must be smooth, naturally settling the next bead into the active center position.
-- **Feedback Loop**: Every successful increment must immediately trigger the chosen haptic and/or audio feedback.
+- **Interaction Axis**: Discrete vertical swipe navigation (similar to reels).
+- **Supported Gestures**: Swipe up = exactly one bead forward. Swipe down = exactly one bead backward.
+- **Hard Invariants**:
+  - Exactly one gesture = exactly one bead movement.
+  - Exactly one gesture = exactly one jap increment (unless guru bead blocks).
+  - Momentum/fling must NEVER move multiple beads.
+  - Long drag must NEVER move multiple beads.
+  - Strong swipe must NEVER move multiple beads.
+  - Repeated touches during active animation must be ignored.
+- **Input Locking**: While bead snap animation is running, ignore all gesture input.
+- **Touch Threshold**: Taps should do nothing. Micro accidental movement should do nothing. Only intentional swipe should trigger.
+- **Feedback Loop**: Every successful movement must immediately trigger the chosen haptic and/or audio feedback.
 
 ## 5. Guru Bead Behavior Definition
 - **Physical Count**: The mala visually consists of exactly 108 beads + 1 Guru bead (Sumeru).
@@ -85,3 +92,6 @@ Build a premium, immersive spiritual meditation and mantra counting Android app.
 - [ ] Home screen correctly shows the last session summary.
 - [ ] App meets defined accessibility and navigation requirements.
 - [ ] UI strictly matches the premium, dark, immersive aesthetic requirement.
+
+
+

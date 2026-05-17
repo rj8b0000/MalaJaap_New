@@ -111,7 +111,8 @@ fun SessionScreen(
                 activeBeadIndex = state.activeBeadIndex,
                 direction = state.direction,
                 isPaused = state.isPaused || state.isCompleted,
-                onSwipeBead = { viewModel.processIntent(SessionIntent.SwipeBead) },
+                onSwipeForward = { viewModel.processIntent(SessionIntent.SwipeBeadForward) },
+                onSwipeBackward = { viewModel.processIntent(SessionIntent.SwipeBeadBackward) },
                 modifier = Modifier.weight(0.6f)
             )
 

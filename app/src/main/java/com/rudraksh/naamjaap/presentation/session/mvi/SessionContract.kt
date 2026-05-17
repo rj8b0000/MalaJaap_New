@@ -27,7 +27,8 @@ data class SessionState(
 
 sealed class SessionIntent : MviIntent {
     object LoadSessionData : SessionIntent()
-    object SwipeBead : SessionIntent()
+    object SwipeBeadForward : SessionIntent()
+    object SwipeBeadBackward : SessionIntent()
     object TogglePauseResume : SessionIntent()
     object EndSession : SessionIntent()
     object AppBackgrounded : SessionIntent()
