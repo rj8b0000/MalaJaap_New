@@ -33,58 +33,58 @@
 - [x] 4.5 Implement `SettingsRepositoryImpl`.
 - [x] 4.6 Implement `SessionRepositoryImpl` (Room and DataStore integration).
 - [x] 4.7 Provide Data layer dependencies via Hilt module.
-- [ ] 4.8 **Verification Task:** Verify Room CRUD operations.
-- [ ] 4.9 **Verification Task:** Verify DataStore persistence.
+- [x] 4.8 **Verification Task:** Verify Room CRUD operations.
+- [x] 4.9 **Verification Task:** Verify DataStore persistence.
 
 ## Phase 5: Feature - Settings
-- [ ] 5.1 Define `SettingsState`, `SettingsIntent`, `SettingsResult`, `SettingsEffect`.
-- [ ] 5.2 Implement pure `SettingsReducer`.
-- [ ] 5.3 Implement `SettingsViewModel`.
-- [ ] 5.4 Build `SettingsScreen` UI and bind to ViewModel.
+- [x] 5.1 Define `SettingsState`, `SettingsIntent`, `SettingsResult`, `SettingsEffect`.
+- [x] 5.2 Implement pure `SettingsReducer`.
+- [x] 5.3 Implement `SettingsViewModel`.
+- [x] 5.4 Build `SettingsScreen` UI and bind to ViewModel.
 
 ## Phase 6: Feature - Home
-- [ ] 6.1 Define `HomeState`, `HomeIntent`, `HomeResult`, `HomeEffect`.
-- [ ] 6.2 Implement pure `HomeReducer`.
-- [ ] 6.3 Implement `HomeViewModel` (DataStore checks, loading last session).
-- [ ] 6.4 Build `HomeScreen` UI.
+- [x] 6.1 Define `HomeState`, `HomeIntent`, `HomeResult`, `HomeEffect`.
+- [x] 6.2 Implement pure `HomeReducer`.
+- [x] 6.3 Implement `HomeViewModel` (DataStore checks, loading last session).
+- [x] 6.4 Build `HomeScreen` UI.
 
 ## Phase 7: Feature - Active Session (Logic)
-- [ ] 7.1 Define `SessionState`, `SessionIntent`, `SessionResult`, `SessionEffect`.
-- [ ] 7.2 Implement pure `SessionReducer`.
-- [ ] 7.3 Implement `SessionViewModel`: start session logic.
-- [ ] 7.4 Implement `SessionViewModel`: pause/resume logic.
-- [ ] 7.5 Implement `SessionViewModel`: completion detection logic.
-- [ ] 7.6 Implement `SessionViewModel`: guru bead state transitions.
-- [ ] 7.7 Implement `SessionViewModel`: timer lifecycle.
-- [ ] 7.8 Implement `SessionViewModel`: persistence triggers.
-- [ ] 7.9 Implement `SessionViewModel`: DataStore restoration flow.
-- [ ] 7.10 Implement `SessionViewModel`: effect emission logic.
-- [ ] 7.11 Implement lifecycle observer integration for app background persistence.
-- [ ] 7.12 **Verification Task:** Verify process death restoration flow.
+- [x] 7.1 Define `SessionState`, `SessionIntent`, `SessionResult`, `SessionEffect`.
+- [x] 7.2 Implement pure `SessionReducer`.
+- [x] 7.3 Implement `SessionViewModel`: start session logic.
+- [x] 7.4 Implement `SessionViewModel`: pause/resume logic.
+- [x] 7.5 Implement `SessionViewModel`: completion detection logic.
+- [x] 7.6 Implement `SessionViewModel`: guru bead state transitions.
+- [x] 7.7 Implement `SessionViewModel`: timer lifecycle.
+- [x] 7.8 Implement `SessionViewModel`: persistence triggers.
+- [x] 7.9 Implement `SessionViewModel`: DataStore restoration flow.
+- [x] 7.10 Implement `SessionViewModel`: effect emission logic.
+- [x] 7.11 Implement lifecycle observer integration for app background persistence.
+- [x] 7.12 **Verification Task:** Verify process death restoration flow.
 
 ## Phase 8: Feature - Active Session (UI & Mala Rendering)
-- [ ] 8.1 Implement Mala UI: wheel state model.
-- [ ] 8.2 Implement Mala UI: virtual index math logic.
-- [ ] 8.3 Implement Mala UI: bead renderer.
-- [ ] 8.4 Implement Mala UI: active bead highlight logic.
-- [ ] 8.5 Implement Mala UI: guru bead renderer.
-- [ ] 8.6 Implement Mala UI: gesture threshold logic.
-- [ ] 8.7 Implement Mala UI: snap animation.
-- [ ] 8.8 Implement Mala UI: direction detection.
-- [ ] 8.9 Implement Mala UI: SessionScreen integration.
-- [ ] 8.10 Implement HUD for large formatted numbers and timer display.
-- [ ] 8.11 Bind `SessionScreen` to `SessionViewModel`, handle `Effect` collection for haptics/audio.
-- [ ] 8.12 **Verification Task:** Verify gesture invariants (exactly 1 gesture = 1 increment).
-- [ ] 8.13 **Verification Task:** Verify render performance at high counts.
+- [x] 8.1 Implement Mala UI: wheel state model.
+- [x] 8.2 Implement Mala UI: virtual index math logic.
+- [x] 8.3 Implement Mala UI: bead renderer.
+- [x] 8.4 Implement Mala UI: active bead highlight logic.
+- [x] 8.5 Implement Mala UI: guru bead renderer.
+- [x] 8.6 Implement Mala UI: gesture threshold logic.
+- [x] 8.7 Implement Mala UI: snap animation.
+- [x] 8.8 Implement Mala UI: direction detection.
+- [x] 8.9 Implement Mala UI: SessionScreen integration.
+- [x] 8.10 Implement HUD for large formatted numbers and timer display.
+- [x] 8.11 Bind `SessionScreen` to `SessionViewModel`, handle `Effect` collection for haptics/audio.
+- [x] 8.12 **Verification Task:** Verify gesture invariants (exactly 1 gesture = 1 increment).
+- [x] 8.13 **Verification Task:** Verify render performance at high counts.
 
 ## Phase 9: Feature - History & Completion
-- [ ] 9.1 Build `SessionCompleteScreen` UI.
-- [ ] 9.2 Define `HistoryState`, `HistoryIntent`, `HistoryResult`.
-- [ ] 9.3 Implement `HistoryReducer`.
-- [ ] 9.4 Implement `HistoryViewModel`.
-- [ ] 9.5 Build `HistoryScreen` UI.
+- [x] 9.1 Build `SessionCompleteScreen` UI.
+- [x] 9.2 Define `HistoryState`, `HistoryIntent`, `HistoryResult`.
+- [x] 9.3 Implement `HistoryReducer`.
+- [x] 9.4 Implement `HistoryViewModel`.
+- [x] 9.5 Build `HistoryScreen` UI.
 
 ## Phase 10: Navigation & Integration
-- [ ] 10.1 Setup Jetpack Navigation Compose `NavHost` with lowercase string routes.
-- [ ] 10.2 Wire up all screens to the `NavHost`.
-- [ ] 10.3 **Verification Task:** Verify comprehensive accessibility requirements (touch targets, contrast, scalable text).
+- [x] 10.1 Setup Jetpack Navigation Compose `NavHost` with lowercase string routes.
+- [x] 10.2 Wire up all screens to the `NavHost`.
+- [x] 10.3 **Verification Task:** Verify comprehensive accessibility requirements (touch targets, contrast, scalable text).

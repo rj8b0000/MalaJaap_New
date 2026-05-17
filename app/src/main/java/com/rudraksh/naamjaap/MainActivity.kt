@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.navigation.compose.rememberNavController
+import com.rudraksh.naamjaap.presentation.navigation.NaamJaapNavGraph
+import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.ui.Modifier
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +22,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Text(text = "Naam Jaap")
+                    val navController = rememberNavController()
+                    NaamJaapNavGraph(navController = navController)
                 }
             }
         }
